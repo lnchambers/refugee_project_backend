@@ -24,7 +24,7 @@ gem 'puma', '~> 3.7'
 # gem 'rack-cors'
 gem "mongoid"
 gem "nmatrix"
-gem "smarter_csv"
+gem "faster-csv"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
