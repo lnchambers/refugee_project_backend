@@ -11,6 +11,17 @@ class ResultsPresenter
 
   def get_results
     NeuralNet.new.create_results(format_params)
+    CSV.open('./data/results.csv') do |row|
+      row.shift
+      shifted_row = row.shift
+      if shifted_row[1] == "0"
+        return {status: "Deceased"}
+      elsif shifted_row[1] == "2"
+        return {status: "Cannot locate"}
+      else
+        return {status: "Located"}
+      end
+    end
   end
 
   private

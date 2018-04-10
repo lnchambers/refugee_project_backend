@@ -5,6 +5,8 @@ describe "Results API" do
     get '/api/v1/results?age=12&gender=afab&country_of_origin=madagascar&group_size=3&country_of_seperation=madagascar'
 
     expect(response).to be_success
+    parsed = JSON.parse(response.body)
+    binding.pry
   end
 
   it "sends the results of the machine learning" do
