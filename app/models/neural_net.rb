@@ -50,26 +50,7 @@ class NeuralNet
     a2_with_bias[0,@hidden_nodes] = 1.0
     z3 = a2_with_bias.dot(@w2)
     a3 = activation_function(z3,@output_func)
-    if opts[:eval_or_train] == 'train'
-      backprop(a1,a2_with_bias,z2,z3,a3,observation.label)
-    elsif opts[:eval_or_train] == 'eval'
-      return a3.each_with_index.max[1]
-    end
-  end
-
-  def backprop(a1,a2_with_bias,z2,z3,a3,label)
-    y = NMatrix.zeroes([1,10])
-    y[0,label] = 1.0
-
-    d3 = -(y - a3)
-    @error_history <<  d3.transpose.abs.sum[0]
-    @classification_history <<  (a3.each_with_index.max[1] == label ? 1.0 : 0.0)
-    d2 =  @w2.dot( d3.transpose )[0..(@hidden_nodes-1)] * derivative(z2.transpose,@hidden_func)
-    grad1 = d2.dot(a1)
-    grad2 = d3.transpose.dot(a2_with_bias)
-
-    @w1 = @w1 - grad1.transpose * @alpha  * 0.1
-    @w2 = @w2 - grad2.transpose * @alpha
+    return a3.each_with_index.max[1]
   end
 
   def sigmoid(mat)
