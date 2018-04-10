@@ -16,8 +16,8 @@ class NeuralNet
   end
 
   def load_trained_weights
-    @w1 = Marshal.load(File.binread('./data/w1.txt')).to_nm
-    @w2 = Marshal.load(File.binread('./data/w2.txt')).to_nm
+    @w1 = Marshal.load(File.binread('./public/data/w1.txt')).to_nm
+    @w2 = Marshal.load(File.binread('./public/data/w2.txt')).to_nm
   end
 
   def create_results(format_params)
