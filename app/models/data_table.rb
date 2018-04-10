@@ -10,7 +10,6 @@ class DataTable
     @label_index = opts[:label_index]
     @observations = FastestCSV.read(@file)
     @variables = @observations[0]
-    @observations.shift
 
     if @file.nil? == false
       @observations.map! do |row|

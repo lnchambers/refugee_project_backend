@@ -22,8 +22,9 @@ class NeuralNet
 
   def create_results(format_params)
    load_trained_weights
+   params_to_csv(format_params)
    @hidden_nodes = @w1.shape[1]
-   data_table = DataTable.new({:file => file , :label_index => 6})
+   data_table = DataTable.new({:file => './data/submission.csv' , :label_index => 6})
    CSV.open("./data/results.csv", "wb") do |csv|
      csv << ["StatusID", "Label"]
      data_table.observations.each_with_index do |observation,i |
@@ -33,8 +34,8 @@ class NeuralNet
   end
 
   def params_to_csv(format_params)
-    CSV.open('./data/submission', 'wb') do |row|
-      binding.pry
+    CSV.open('./data/submission.csv', 'wb') do |row|
+      format_params << " "
       row << format_params
     end
   end

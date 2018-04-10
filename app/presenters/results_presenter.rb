@@ -10,7 +10,6 @@ class ResultsPresenter
   end
 
   def get_results
-    binding.pry
     NeuralNet.new.create_results(format_params)
   end
 
@@ -18,9 +17,14 @@ class ResultsPresenter
 
     attr_reader :age, :name, :gender, :country_of_origin, :group_size, :country_of_seperation
 
-    def format_params
+    def params_to_array
       [age, name, gender, country_of_origin, group_size, country_of_seperation]
     end
 
+    def format_params
+      params_to_array.map do |attribute|
+        attribute ? attribute : " "
+      end
+    end
 
 end
