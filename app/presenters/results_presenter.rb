@@ -1,4 +1,4 @@
-class ResultsPresenter
+class ResultsPresenter < ApplicationController
 
   def initialize(params)
     @age = params[:age]
@@ -11,17 +11,7 @@ class ResultsPresenter
 
   def get_results
     NeuralNet.new.create_results(format_params)
-    CSV.open('./data/results.csv') do |row|
-      row.shift
-      shifted_row = row.shift
-      if shifted_row[1] == "0"
-        return {status: "Deceased"}
-      elsif shifted_row[1] == "2"
-        return {status: "Cannot locate"}
-      else
-        return {status: "Located"}
-      end
-    end
+    format_results
   end
 
   private
@@ -36,6 +26,28 @@ class ResultsPresenter
       params_to_array.map do |attribute|
         attribute ? attribute : " "
       end
+    end
+
+    def format_results
+      CSV.open('./data/results.csv') do |row|
+        row.shift
+        shifted_row = row.shift
+        if shifted_row[1] == "0"
+          clean_disk
+          return {status: "Deceased"}
+        elsif shifted_row[1] == "2"
+          clean_disk
+          return {status: "Cannot locate"}
+        else
+          clean_disk
+          return {status: "Located"}
+        end
+      end
+    end
+
+    def clean_disk
+      FileUtils.rm('./data/results.csv')
+      FileUtils.rm('./data/submission.csv')
     end
 
 end
