@@ -24,8 +24,8 @@ class NeuralNet
    load_trained_weights
    params_to_csv(format_params)
    @hidden_nodes = @w1.shape[1]
-   data_table = DataTable.new({:file => './data/submission.csv' , :label_index => 6})
-   CSV.open("./data/results.csv", "wb") do |csv|
+   data_table = DataTable.new({:file => './public/data/submission.csv' , :label_index => 6})
+   CSV.open("./public/data/results.csv", "wb") do |csv|
      csv << ["StatusID", "Label"]
      data_table.observations.each_with_index do |observation,i |
        csv << [(i+1).to_s, forward(observation,{:eval_or_train => 'eval'}) ]
@@ -34,7 +34,7 @@ class NeuralNet
   end
 
   def params_to_csv(format_params)
-    CSV.open('./data/submission.csv', 'wb') do |row|
+    CSV.open('./public/data/submission.csv', 'wb') do |row|
       format_params << " "
       row << format_params
     end
@@ -70,46 +70,6 @@ class NeuralNet
 
     @w1 = @w1 - grad1.transpose * @alpha  * 0.1
     @w2 = @w2 - grad2.transpose * @alpha
-  end
-
-  def train
-    puts "Entered Training"
-    i = 0
-    start_time = Time.now
-    initialize_new_weights
-
-    loop do
-      forward(@dt.sample,{:eval_or_train => 'train'})
-
-      ave_error_history = running_average(1000,@error_history)
-      ave_error_history_5000 = running_average(5000,@error_history)
-      ave_classification_history = running_average(1000,@classification_history)
-      ave_classification_history_5000 = running_average(5000,@classification_history)
-      ratio = (ave_classification_history  / ave_classification_history_5000)
-
-      puts "Running Average Error (1000)          => #{ave_error_history}"
-      puts "Running Average Error (5000)          => #{ave_error_history_5000}"
-      puts "Running Average Classification (1000) => #{ave_classification_history} "
-      puts "Running Average Classification (5000) => #{ave_classification_history_5000}"
-      puts "Classification Running Average Ratio  => #{ratio}"
-
-      puts "Iteration = #{i}"
-      puts "---"
-
-      if ratio < 1.0 and i > 60000
-        finish_time = Time.now
-        puts File.open('./data/w1.txt','w'){|f| f << Marshal.dump(@w1.to_a)}
-        puts File.open('./data/w2.txt','w'){|f| f << Marshal.dump(@w2.to_a)}
-        puts "Total training time was: #{(finish_time - start_time).round(0)} sec"
-        break
-      end
-
-    i += 1
-    end
-  end
-
-  def running_average(scale,ary)
-    ary.last(scale).inject{ |sum, el| sum + el}.to_f / [scale,ary.size].min
   end
 
   def sigmoid(mat)

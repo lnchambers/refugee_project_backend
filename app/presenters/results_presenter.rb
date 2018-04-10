@@ -29,7 +29,7 @@ class ResultsPresenter < ApplicationController
     end
 
     def format_results
-      CSV.open('./data/results.csv') do |row|
+      CSV.open('./public/data/results.csv') do |row|
         row.shift
         shifted_row = row.shift
         if shifted_row[1] == "0"
@@ -46,8 +46,8 @@ class ResultsPresenter < ApplicationController
     end
 
     def clean_disk
-      FileUtils.rm('./data/results.csv')
-      FileUtils.rm('./data/submission.csv')
+      FileUtils.rm('./public/data/results.csv')
+      FileUtils.rm('./public/data/submission.csv')
     end
 
 end
