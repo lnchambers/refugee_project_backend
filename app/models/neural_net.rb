@@ -2,7 +2,6 @@ require_relative 'data_table.rb'
 require 'nmatrix'
 require 'csv'
 require 'optparse'
-require 'pry'
 
 
 class NeuralNet
