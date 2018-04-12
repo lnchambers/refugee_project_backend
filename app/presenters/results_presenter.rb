@@ -2,11 +2,11 @@ class ResultsPresenter < ApplicationController
 
   def initialize(params)
     @age = params[:age]
-    @name = params[:name]
-    @gender = params[:gender]
-    @country_of_origin = params[:country_of_origin]
+    @name = params[:name].ord unless params[:name].nil?
+    @gender = params[:gender].ord unless params[:gender].nil?
+    @country_of_origin = params[:country_of_origin].ord unless params[:country_of_origin].nil?
     @group_size = params[:group_size]
-    @country_of_seperation = params[:country_of_seperation]
+    @country_of_seperation = params[:country_of_seperation].ord unless params[:country_of_seperation].nil?
   end
 
   def get_results
