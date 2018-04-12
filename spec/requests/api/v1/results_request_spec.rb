@@ -17,9 +17,21 @@ describe "Results API" do
     expect(parsed[:status]).to eq("Deceased")
   end
 
-  it "will deny any invalid request" do
+  it "will deny an invalid request without id and secret key" do
     lambda {
         get "/api/v1/results?age=50&gender=amab&country_of_origin=iran&group_size=3&country_of_seperation=turkey"
+      }.should raise_error(ActionController::RoutingError)
+  end
+
+  it "will deny an invalid request without id" do
+    lambda {
+        get "/api/v1/results?age=50&gender=amab&country_of_origin=iran&group_size=3&country_of_seperation=turkey&client_secret=#{ENV['CLIENT_SECRET']}"
+      }.should raise_error(ActionController::RoutingError)
+  end
+
+  it "will deny an invalid request without secret key" do
+    lambda {
+        get "/api/v1/results?age=50&gender=amab&country_of_origin=iran&group_size=3&country_of_seperation=turkey&client_id=#{ENV['CLIENT_ID']}"
       }.should raise_error(ActionController::RoutingError)
   end
 end
