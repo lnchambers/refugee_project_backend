@@ -34,4 +34,10 @@ describe "Results API" do
         get "/api/v1/results?age=50&gender=amab&country_of_origin=iran&group_size=3&country_of_seperation=turkey&client_id=#{ENV['CLIENT_ID']}"
       }.should raise_error(ActionController::RoutingError)
   end
+
+  it "should allow a request with missing attributes" do
+    get "/api/v1/results?gender=amab&group_size=3&client_id=#{ENV['CLIENT_ID']}&client_secret=#{ENV['CLIENT_SECRET']}"
+
+    expect(response).to be_success
+  end
 end
