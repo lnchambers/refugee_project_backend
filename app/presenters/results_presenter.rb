@@ -10,6 +10,7 @@ class ResultsPresenter < ApplicationController
   end
 
   def get_results
+    return { message: "At least one attribute is needed" } if attributes_empty?
     NeuralNet.new.create_results(format_params)
     format_results
   end
@@ -48,6 +49,10 @@ class ResultsPresenter < ApplicationController
     def clean_disk
       FileUtils.rm('./public/data/results.csv')
       FileUtils.rm('./public/data/submission.csv')
+    end
+
+    def attributes_empty?
+      format_params.uniq.count == 1 && format_params.uniq[0] == " "
     end
 
 end

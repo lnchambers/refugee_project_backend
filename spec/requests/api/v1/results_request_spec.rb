@@ -40,4 +40,13 @@ describe "Results API" do
 
     expect(response).to be_success
   end
+
+  it "shouldn't allow a request without attributes" do
+    get "/api/v1/results?client_id=#{ENV['CLIENT_ID']}&client_secret=#{ENV['CLIENT_SECRET']}"
+
+    expect(response).to be_success
+    parsed = JSON.parse(response.body, symbolize_names: true)
+
+    expect(parsed[:message]).to eq("At least one attribute is needed")
+  end
 end
