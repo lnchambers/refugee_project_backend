@@ -1,11 +1,11 @@
 class ResultsPresenter < ApplicationController
 
   def initialize(params)
-    @age = params[:age]
+    @age = params[:age].to_i unless params[:age].nil?
     @name = params[:name]
     @gender = params[:gender]
     @country_of_origin = params[:country_of_origin]
-    @group_size = params[:group_size]
+    @group_size = params[:group_size].to_i unless params[:group_size].nil?
     @country_of_seperation = params[:country_of_seperation]
   end
 
@@ -23,9 +23,15 @@ class ResultsPresenter < ApplicationController
       [age, name, gender, country_of_origin, group_size, country_of_seperation]
     end
 
-    def format_params
+    def sanitized_params
       params_to_array.map do |attribute|
-        attribute ? attribute.ord : " "
+        attribute.ord unless attribute.nil?
+      end
+    end
+
+    def format_params
+      sanitized_params.map do |attribute|
+        attribute ? attribute : " "
       end
     end
 
