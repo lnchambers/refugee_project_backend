@@ -11,7 +11,7 @@ class NeuralNet
     @output_func = 'softmax'
     @eval_or_train = 'eval'
     @number_of_classes = 10
-    @input_size = 784
+    @input_size = 6
   end
 
   def load_trained_weights
