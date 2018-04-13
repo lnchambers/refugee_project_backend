@@ -1,12 +1,12 @@
 class ResultsPresenter < ApplicationController
 
   def initialize(params)
-    @age = params[:age]
-    @name = params[:name].ord unless params[:name].nil?
-    @gender = params[:gender].ord unless params[:gender].nil?
-    @country_of_origin = params[:country_of_origin].ord unless params[:country_of_origin].nil?
-    @group_size = params[:group_size]
-    @country_of_seperation = params[:country_of_seperation].ord unless params[:country_of_seperation].nil?
+    @age = params[:age].to_i unless params[:age].nil?
+    @name = params[:name]
+    @gender = params[:gender]
+    @country_of_origin = params[:country_of_origin]
+    @group_size = params[:group_size].to_i unless params[:group_size].nil?
+    @country_of_seperation = params[:country_of_seperation]
   end
 
   def get_results
@@ -23,8 +23,14 @@ class ResultsPresenter < ApplicationController
       [age, name, gender, country_of_origin, group_size, country_of_seperation]
     end
 
-    def format_params
+    def sanitized_params
       params_to_array.map do |attribute|
+        sum_of_attribute(attribute) if attribute.class == String
+      end
+    end
+
+    def format_params
+      sanitized_params.map do |attribute|
         attribute ? attribute : " "
       end
     end
@@ -55,4 +61,9 @@ class ResultsPresenter < ApplicationController
       format_params.uniq.count == 1 && format_params.uniq[0] == " "
     end
 
+    def sum_of_attribute(attribute)
+      attribute.chars.sum do |letter|
+        letter.ord
+      end
+    end
 end
