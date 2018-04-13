@@ -24,14 +24,8 @@ class ResultsPresenter < ApplicationController
     end
 
     def sanitized_params
-      params_to_array.reduce([]) do |result, attribute|
-        if attribute.nil?
-          result << attribute
-        elsif attribute == " "
-          result << attribute
-        else
-          result << attribute.ord
-        end
+      params_to_array.map do |attribute|
+        sum_of_attribute(attribute) if attribute.class == String
       end
     end
 
@@ -67,4 +61,9 @@ class ResultsPresenter < ApplicationController
       format_params.uniq.count == 1 && format_params.uniq[0] == " "
     end
 
+    def sum_of_attribute(attribute)
+      attribute.chars.sum do |letter|
+        letter.ord
+      end
+    end
 end
