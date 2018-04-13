@@ -24,8 +24,14 @@ class ResultsPresenter < ApplicationController
     end
 
     def sanitized_params
-      params_to_array.map do |attribute|
-        attribute.ord unless attribute.nil?
+      params_to_array.reduce([]) do |result, attribute|
+        if attribute.nil?
+          result << attribute
+        elsif attribute == " "
+          result << attribute
+        else
+          result << attribute.ord
+        end
       end
     end
 
