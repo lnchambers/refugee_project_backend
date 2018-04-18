@@ -25,7 +25,7 @@ class NeuralNet
    @hidden_nodes = @w1.shape[1]
    data_table = DataTable.new({:file => './public/data/submission.csv' , :label_index => 6})
    CSV.open("./public/data/results.csv", "wb") do |csv|
-     csv << ["StatusID", "Label"]
+     csv << ["StatusID", "Status"]
      data_table.observations.each_with_index do |observation,i |
        csv << [(i+1).to_s, forward(observation,{:eval_or_train => 'eval'}) ]
       end
